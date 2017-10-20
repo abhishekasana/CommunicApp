@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "5483992176",
+    "firebase_url": "https://communicappmcproject.firebaseio.com",
+    "project_id": "communicappmcproject",
+    "storage_bucket": "communicappmcproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:5483992176:android:27f58dcc2291e38b",
+        "android_client_info": {
+          "package_name": "com.sleepingteam.communicappmcproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "5483992176-cm2v9g5rfpbom6asiq4s5mm4spn3ejfd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sleepingteam.communicappmcproject",
+            "certificate_hash": "47b2ccf1e60309e84c4b23347e1f0d1c0eb069cd"
+          }
+        },
+        {
+          "client_id": "5483992176-c8g9a6d3gllphiopajpurmeeukivlndn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB5ns86K4NsWkaPNQRQXIatHqKXcagsqO8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "5483992176-c8g9a6d3gllphiopajpurmeeukivlndn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

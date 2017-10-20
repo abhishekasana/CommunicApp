@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#076585</color>
+    <!--<color name="colorAccent">#b0ff57</color>-->
+    <color name="colorAccent">#E7E9BB</color>
+
+    <color name="yellow">#f1c40f</color>
+    <color name="light_purple">#E8E1E7</color>
+    <color name="light_green">#50d050</color>
+    <color name="dark_green">#008000</color>
+    <color name="sand">#DECBA4</color>
+    <color name="grey_blue">#3E5151</color>
+    <color name="blue_shade">#302b63</color>
+
+    <color name="status_bar_color">#FF000000</color>
+    <color name="layout_border_color">#FF111111</color>
+
+    <color name="splash_bg">#21271F</color>
+    <color name="app_textcolor_heading">#444444</color>
+    <color name="app_textcolor">#110F10</color>
+    <color name="app_hintcolor">#3e3e3e</color>
+    <color name="light_transpirant_black">#79666565</color>
+
+    <!-- Basic Colors -->
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="light_gray">#d9d9d9</color>
+    <color name="dark_gray">#6a6869</color>
+    <color name="red">#d73f3f</color>
+    <color name="green">#94d60a</color>
+    <color name="transparent">#00fafafa</color>
+    <color name="disabled_color">#ABABAB</color>
+</resources>
