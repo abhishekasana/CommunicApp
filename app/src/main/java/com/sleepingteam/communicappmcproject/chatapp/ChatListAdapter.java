@@ -3,6 +3,7 @@ package com.sleepingteam.communicappmcproject.chatapp;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.sleepingteam.communicappmcproject.R;
 
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 
 /**
@@ -113,8 +115,15 @@ public class ChatListAdapter extends BaseAdapter{
         String author = message.getAuthor();
         holder.authorName.setText(author);
 
-        String msg = message.getMessage();
-        holder.body.setText(msg);
+        String decryptedMessage = message.getMessage();
+
+        try {
+            decryptedMessage = Crypt.decrypt(author, decryptedMessage);
+        } catch (GeneralSecurityException e) {
+            Log.d("crypt", e.toString());
+        }
+
+        holder.body.setText(decryptedMessage);
 
 
         return convertView;

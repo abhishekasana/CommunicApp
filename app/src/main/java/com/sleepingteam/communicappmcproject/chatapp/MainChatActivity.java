@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -16,6 +17,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.sleepingteam.communicappmcproject.R;
 import com.sleepingteam.communicappmcproject.wifidirect.wifi.WiFiDirectActivity;
+
+import java.security.GeneralSecurityException;
 
 
 public class MainChatActivity extends AppCompatActivity {
@@ -81,7 +84,14 @@ public class MainChatActivity extends AppCompatActivity {
 
         String input = mInputText.getText().toString();
         if(!input.equals("")){
-            InstantMessage chat = new InstantMessage(input, mDisplayName);
+            String encryptedMessage = "";
+            String key = mDisplayName;
+            try {
+                encryptedMessage = Crypt.encrypt(key, input);
+            } catch (GeneralSecurityException e) {
+                Log.d("crypt", e.toString());
+            }
+            InstantMessage chat = new InstantMessage(encryptedMessage, mDisplayName);
             mDatabaseRefrence.child("messages").push().setValue(chat);
             mInputText.setText("");
         }
@@ -104,7 +114,7 @@ public class MainChatActivity extends AppCompatActivity {
 
     public void wifidirectclick(View view) {
         Intent intent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
-        Toast.makeText(getApplicationContext(),"I am being clicked",Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(),"Opening file sharing module",Toast.LENGTH_LONG).show();
         startActivity(intent);
     }
 }
