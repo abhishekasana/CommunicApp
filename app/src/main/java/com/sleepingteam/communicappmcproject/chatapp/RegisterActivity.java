@@ -38,8 +38,6 @@ public class RegisterActivity extends AppCompatActivity {
     // Firebase instance variables
     private FirebaseAuth mAuth;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,8 +61,6 @@ public class RegisterActivity extends AppCompatActivity {
         });
 
         mAuth = FirebaseAuth.getInstance();
-
-
     }
 
     // Executed when Sign Up button is pressed.
@@ -145,13 +141,11 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-
     private void saveDisplayName(){
         String username = mUsernameView.getText().toString();
         SharedPreferences pref = getSharedPreferences(CHAT_PREFS, 0);
         pref.edit().putString(DISPLAY_NAME_KEY, username).apply();
     }
-
 
     private void showErrorDialog(String message){
         new AlertDialog.Builder(this)
@@ -161,8 +155,4 @@ public class RegisterActivity extends AppCompatActivity {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
-
-
-
-
 }
