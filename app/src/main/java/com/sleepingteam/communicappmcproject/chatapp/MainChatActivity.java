@@ -1,8 +1,15 @@
 package com.sleepingteam.communicappmcproject.chatapp;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -21,7 +28,7 @@ import com.sleepingteam.communicappmcproject.wifidirect.wifi.WiFiDirectActivity;
 import java.security.GeneralSecurityException;
 
 
-public class MainChatActivity extends AppCompatActivity {
+public class MainChatActivity extends AppCompatActivity implements LocationListener {
 
     private String mDisplayName;
     private ListView mChatListView;
@@ -29,8 +36,9 @@ public class MainChatActivity extends AppCompatActivity {
     private ImageButton mSendButton;
 
     private DatabaseReference mDatabaseRefrence;
-
     private ChatListAdapter mAdapter;
+    private LocationManager locationManager;
+    private Context mContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +48,9 @@ public class MainChatActivity extends AppCompatActivity {
         setupDisplayName();
         mDatabaseRefrence = FirebaseDatabase.getInstance().getReference();
 
+        mContext = getApplicationContext();
+        locationManager = (LocationManager) mContext
+                .getSystemService(Context.LOCATION_SERVICE);
 
         // Link the Views in the layout to the Java code
         mInputText = (EditText) findViewById(R.id.messageInput);
@@ -64,7 +75,9 @@ public class MainChatActivity extends AppCompatActivity {
         mShareButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                wifidirectclick(v);
+                // TODO: Have to add a button in the UI for Location sharing
+                sendLocationMessage();
+//                wifidirectclick(v);
             }
         });
 
@@ -83,6 +96,7 @@ public class MainChatActivity extends AppCompatActivity {
     private void sendMessage() {
 
         String input = mInputText.getText().toString();
+
         if(!input.equals("")){
             String encryptedMessage = "";
             String key = mDisplayName;
@@ -96,6 +110,44 @@ public class MainChatActivity extends AppCompatActivity {
             mInputText.setText("");
         }
 
+    }
+
+    private void sendLocationMessage() {
+        String googleMapsURL = "";
+        boolean isGPSEnable = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        boolean isNetworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        if (isGPSEnable) {
+            if (locationManager != null) {
+                if (ActivityCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                        && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(mContext, "No permissions", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 10, this);
+                double latitude, longitude;
+                Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                locationManager.removeUpdates(this);
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                Toast.makeText(mContext, "Lat: " + latitude + ", Long: " + longitude,
+                        Toast.LENGTH_LONG).show();
+                googleMapsURL = "https://www.google.com/maps/search/?api=1&query=" + latitude +
+                        ", " + longitude;
+                String encryptedMessage = "";
+                String key = mDisplayName;
+                try {
+                    encryptedMessage = Crypt.encrypt(key, googleMapsURL);
+                } catch (GeneralSecurityException e) {
+                    Log.d("crypt", e.toString());
+                }
+                InstantMessage chat = new InstantMessage(encryptedMessage, mDisplayName);
+                mDatabaseRefrence.child("messages").push().setValue(chat);
+            }
+        } else {
+            Toast.makeText(mContext, "GPS is not enabled", Toast.LENGTH_LONG).show();
+        }
     }
 
 
@@ -116,5 +168,25 @@ public class MainChatActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
         Toast.makeText(getApplicationContext(),"Opening file sharing module",Toast.LENGTH_LONG).show();
         startActivity(intent);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }
