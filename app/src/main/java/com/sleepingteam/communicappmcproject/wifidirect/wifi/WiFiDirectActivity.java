@@ -43,9 +43,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sleepingteam.communicappmcproject.R;
+import com.sleepingteam.communicappmcproject.chatapp.MainChatActivity;
 import com.sleepingteam.communicappmcproject.wifidirect.utils.PermissionsAndroid;
 
 import java.util.List;
@@ -148,7 +150,8 @@ public class WiFiDirectActivity extends AppCompatActivity implements ChannelList
         // add necessary intent values to be matched.
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
-        getSupportActionBar().setTitle("WifiDirect");
+        getSupportActionBar().setTitle("SHARE FILES");
+        ((TextView)findViewById(R.id.username)).setText(MainChatActivity.getUsername());
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_STATE_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_PEERS_CHANGED_ACTION);
         intentFilter.addAction(WifiP2pManager.WIFI_P2P_CONNECTION_CHANGED_ACTION);

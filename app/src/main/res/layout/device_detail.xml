@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-    <LinearLayout
-    android:id="@+id/device_detail_container"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/details_view"
-        android:visibility="visible">
+<LinearLayout android:id="@+id/device_detail_container"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/details_view"
+    android:visibility="visible"
+    xmlns:tools="http://schemas.android.com/tools">
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:orientation="horizontal"
@@ -60,6 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center"
+            android:background="@color/cardview_light_background"
             android:layout_margin="5dp"
             android:id="@+id/status_text">
         </TextView>
