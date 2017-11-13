@@ -50,7 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         if(mAuth.getCurrentUser() != null){
-            Intent intent = new Intent(LoginActivity.this, MainChatActivity.class);
+            Intent intent = new Intent(LoginActivity.this, ChatTypeChoice.class);
             finish();
             startActivity(intent);
         }
