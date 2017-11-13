@@ -127,8 +127,8 @@ public class ChatListAdapter extends BaseAdapter{
         } catch (GeneralSecurityException e) {
             Log.d("crypt", e.toString());
         }
-
         holder.body.setText(decryptedMessage);
+        holder.body.setTextColor(Color.BLACK);
         if (decryptedMessage.contains("http://") || decryptedMessage.contains("www.")) {
             final String initialText = "My location: ";
             holder.body.setText(initialText + decryptedMessage);
