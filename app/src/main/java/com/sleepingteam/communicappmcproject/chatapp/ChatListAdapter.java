@@ -2,7 +2,9 @@ package com.sleepingteam.communicappmcproject.chatapp;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,9 +22,12 @@ import com.sleepingteam.communicappmcproject.R;
 
 import java.security.GeneralSecurityException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by abhi on 02-10-2017.
+ * Modified by Robin on 12-11-2017
  */
 
 public class ChatListAdapter extends BaseAdapter{
@@ -137,8 +142,20 @@ public class ChatListAdapter extends BaseAdapter{
         }
 
         holder.body.setText(decryptedMessage);
-
-
+        if (decryptedMessage.contains("http://") || decryptedMessage.contains("www.")) {
+            final String initialText = "My location: ";
+            holder.body.setText(initialText + decryptedMessage);
+            holder.body.setTextColor(Color.BLUE);
+            holder.body.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String message = holder.body.getText().toString();
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW);
+                    browserIntent.setData(Uri.parse(message.substring(initialText.length())));
+                    mActivity.startActivity(browserIntent);
+                }
+            });
+        }
         return convertView;
     }
 
@@ -156,7 +173,6 @@ public class ChatListAdapter extends BaseAdapter{
 
         holder.authorName.setLayoutParams(holder.params);
         holder.body.setLayoutParams(holder.params);
-
     }
 
     public void cleanup(){
