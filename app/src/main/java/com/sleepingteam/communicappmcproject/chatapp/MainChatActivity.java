@@ -9,6 +9,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -39,6 +40,9 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
     private ChatListAdapter mAdapter;
     private LocationManager locationManager;
     private Context mContext;
+
+    private double mLat;
+    private double mLong;
 
     private String email_id = "";
 
@@ -84,8 +88,8 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
             @Override
             public void onClick(View v) {
                 // TODO: Have to add a button in the UI for Location sharing
-//                sendLocationMessage();
-                wifidirectclick(v);
+                sendLocationMessage();
+//                wifidirectclick(v);
             }
         });
 
@@ -137,12 +141,18 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
                     Toast.makeText(mContext, "No permissions", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 10, this);
+                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1, 1, this);
                 double latitude, longitude;
                 Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                if (location == null) {
+                    Snackbar.make(mChatListView, "Problem in identifying location", Snackbar.LENGTH_LONG).show();
+                    latitude = mLat;
+                    longitude = mLong;
+                } else {
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                }
                 locationManager.removeUpdates(this);
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
                 Toast.makeText(mContext, "Lat: " + latitude + ", Long: " + longitude,
                         Toast.LENGTH_LONG).show();
                 googleMapsURL = "https://www.google.com/maps/search/?api=1&query=" + latitude +
@@ -158,7 +168,8 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
                 mDatabaseRefrence.child("messages").push().setValue(chat);
             }
         } else {
-            Toast.makeText(mContext, "GPS is not enabled", Toast.LENGTH_LONG).show();
+//            Toast.makeText(mContext, "GPS is not enabled", Toast.LENGTH_LONG).show();
+            Snackbar.make(mChatListView, "GPS is not enabled", Snackbar.LENGTH_LONG).show();
             if (isNetworkEnabled) {
                 if (locationManager != null) {
                     locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 10, this);
@@ -181,6 +192,8 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
                     InstantMessage chat = new InstantMessage(encryptedMessage, mDisplayName);
                     mDatabaseRefrence.child("messages").push().setValue(chat);
                 }
+            } else {
+                Snackbar.make(mChatListView, "Network location is not available", Snackbar.LENGTH_LONG).show();
             }
         }
     }
@@ -210,8 +223,9 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
 
     @Override
     public void onLocationChanged(Location location) {
-
-    }
+        mLat = location.getLatitude();
+        mLong = location.getLongitude();
+}
 
     @Override
     public void onStatusChanged(String s, int i, Bundle bundle) {
