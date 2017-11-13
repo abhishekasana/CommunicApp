@@ -10,8 +10,11 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sleepingteam.communicappmcproject.R;
 
 public class PersonalChat extends AppCompatActivity {
@@ -26,6 +29,10 @@ public class PersonalChat extends AppCompatActivity {
     private DatabaseReference mchildDatabaseRefrence;
     private DatabaseReference mUserChatDatabaseReference;
 
+    private boolean selectionCheck = false;
+
+    private static final String TAG = "PersonalChat";
+
     private ChatListAdapter mAdapter;
 
     MyDatabaseHelper databaseHelper;
@@ -36,11 +43,68 @@ public class PersonalChat extends AppCompatActivity {
         setContentView(R.layout.activity_personal_chat);
 
         setupDisplayName();
-//        String email_id = getIntent().getStringExtra("EMAIL_ID");
+        String email_id = getIntent().getStringExtra("EMAIL_ID");
         mDatabaseRefrence = FirebaseDatabase.getInstance().getReference();
-//        String dbTag = "personalchat"+mEmail;
+        int index = mEmail.indexOf('@');
+        mEmail = mEmail.substring(0,index);
+
+        index = email_id.indexOf('@');
+        email_id = email_id.substring(0,index);
+
+        String dbTagOne = mEmail+email_id;
+        String dbTagTwo = email_id+mEmail;
+        final String temp = dbTagOne;
+
+//        Toast.makeText(getApplicationContext(),dbTagTwo,Toast.LENGTH_LONG).show();
         mchildDatabaseRefrence = mDatabaseRefrence.child("personalchat");
-        mUserChatDatabaseReference = mchildDatabaseRefrence.child(mDisplayName);
+        mUserChatDatabaseReference = mchildDatabaseRefrence.child("blaa");
+
+        mchildDatabaseRefrence.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                if (snapshot.hasChild(temp)) {
+                    selectionCheck = true;
+//                    mUserChatDatabaseReference = mchildDatabaseRefrence.child(dbTagOne);
+                    // run some code
+                }else{
+                    selectionCheck = false;
+//                    mUserChatDatabaseReference = mchildDatabaseRefrence.child(dbTagTwo);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        if(!selectionCheck){
+            mUserChatDatabaseReference = mchildDatabaseRefrence.child(dbTagOne);
+        }else{
+            mUserChatDatabaseReference = mchildDatabaseRefrence.child(dbTagTwo);
+        }
+
+//        Toast.makeText(getApplicationContext(),"hey "+mUserChatDatabaseReference.child("messages")..getKey(),Toast.LENGTH_LONG).show();
+//        mUserChatDatabaseReference.child("messages").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snap: dataSnapshot.getChildren()) {
+////                    Log.e(snap.getKey(),snap.getChildrenCount() + "");
+////                    Toast.makeText(getApplicationContext(),"Count is "+snap.getChildrenCount(),Toast.LENGTH_LONG).show();
+//                    selectionCheck = true;
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Toast.makeText(getApplicationContext(),"cancelllll ",Toast.LENGTH_LONG).show();
+//            }
+//
+//        });
+//        if(!selectionCheck){
+//            mUserChatDatabaseReference = mchildDatabaseRefrence.child(dbTagTwo);
+//        }
+
 
 
         // Link the Views in the layout to the Java code

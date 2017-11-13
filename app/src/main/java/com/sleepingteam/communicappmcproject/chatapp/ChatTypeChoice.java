@@ -36,7 +36,7 @@ public class ChatTypeChoice extends AppCompatActivity {
                     email.setError(getString(R.string.error_field_required));
                 }else{
                     Intent intent = new Intent(ChatTypeChoice.this,PersonalChat.class);
-//                    intent.putExtra("EMAIL_ID", email.getText().toString());
+                    intent.putExtra("EMAIL_ID", email.getText().toString());
                     startActivity(intent);}
             }
         });

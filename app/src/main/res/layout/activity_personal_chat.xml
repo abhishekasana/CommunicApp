@@ -21,6 +21,17 @@
         android:dividerHeight="0dp"
         android:transcriptMode="alwaysScroll" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:layout_marginBottom="20dp"
+        android:layout_alignBottom="@+id/chat_list_view"
+        android:layout_alignParentEnd="true"
+        android:src="@android:drawable/ic_menu_share" />
+
     <LinearLayout
         android:id="@+id/listFooter"
         android:layout_width="fill_parent"
