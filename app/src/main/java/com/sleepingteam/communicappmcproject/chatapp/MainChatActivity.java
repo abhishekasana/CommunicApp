@@ -30,7 +30,7 @@ import java.security.GeneralSecurityException;
 
 public class MainChatActivity extends AppCompatActivity implements LocationListener {
 
-    private String mDisplayName;
+    private static String mDisplayName;
     private ListView mChatListView;
     private EditText mInputText;
     private ImageButton mSendButton;
@@ -84,8 +84,8 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
             @Override
             public void onClick(View v) {
                 // TODO: Have to add a button in the UI for Location sharing
-                sendLocationMessage();
-//                wifidirectclick(v);
+//                sendLocationMessage();
+                wifidirectclick(v);
             }
         });
 
@@ -118,6 +118,10 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
             mInputText.setText("");
         }
 
+    }
+
+    public static String getUsername() {
+        return mDisplayName;
     }
 
     private void sendLocationMessage() {
@@ -155,9 +159,31 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
             }
         } else {
             Toast.makeText(mContext, "GPS is not enabled", Toast.LENGTH_LONG).show();
+            if (isNetworkEnabled) {
+                if (locationManager != null) {
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1, 10, this);
+                    double latitude, longitude;
+                    Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                    locationManager.removeUpdates(this);
+                    latitude = location.getLatitude();
+                    longitude = location.getLongitude();
+                    Toast.makeText(mContext, "Lat: " + latitude + ", Long: " + longitude,
+                            Toast.LENGTH_LONG).show();
+                    googleMapsURL = "https://www.google.com/maps/search/?api=1&query=" + latitude +
+                            ", " + longitude;
+                    String encryptedMessage = "";
+                    String key = mDisplayName;
+                    try {
+                        encryptedMessage = Crypt.encrypt(key, googleMapsURL);
+                    } catch (GeneralSecurityException e) {
+                        Log.d("crypt", e.toString());
+                    }
+                    InstantMessage chat = new InstantMessage(encryptedMessage, mDisplayName);
+                    mDatabaseRefrence.child("messages").push().setValue(chat);
+                }
+            }
         }
     }
-
 
     @Override
     protected void onStart() {
@@ -179,7 +205,7 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
     public void wifidirectclick(View view) {
         Intent intent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
         Toast.makeText(getApplicationContext(),"Opening file sharing module",Toast.LENGTH_LONG).show();
-//        startActivity(intent);
+        startActivity(intent);
     }
 
     @Override
