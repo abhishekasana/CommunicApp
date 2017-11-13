@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sleepingteam.communicappmcproject">
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <uses-feature
         android:name="android.hardware.wifi.direct"
@@ -22,17 +25,18 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
-        <meta-data
-            android:name="android.support.FILE_PROVIDER_PATHS"
-            android:resource="@xml/provider_paths"/>
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
         </provider>
 
-        <activity android:name=".chatapp.MainChatActivity"/>
+        <activity android:name=".chatapp.MainChatActivity" />
         <activity android:name=".chatapp.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -41,13 +45,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".chatapp.RegisterActivity" />
-
-
         <activity
             android:name=".wifidirect.wifi.WiFiDirectActivity"
             android:label="wifidirect"
-            android:launchMode="singleTask">
-        </activity>
+            android:launchMode="singleTask" />
         <!-- Used for transferring files  after a successful connection -->
         <service
             android:name=".wifidirect.wifi.FileTransferService"
@@ -56,6 +57,8 @@
             android:name=".wifidirect.wifi.WiFiClientIPTransferService"
             android:enabled="true" />
 
+        <activity android:name=".chatapp.ChatTypeChoice" />
+        <activity android:name=".chatapp.PersonalChat"></activity>
     </application>
 
 </manifest>
