@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "onComplete: Problem signing in "+task.getException());
                     showErrorDialog("There was a problem signing in");
                 }else{
-                    Intent intent = new Intent(LoginActivity.this, MainChatActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, ChatTypeChoice.class);
                     finish();
                     startActivity(intent);
                 }

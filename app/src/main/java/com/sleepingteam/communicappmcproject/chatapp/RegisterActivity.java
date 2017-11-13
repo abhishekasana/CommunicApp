@@ -143,8 +143,10 @@ public class RegisterActivity extends AppCompatActivity {
 
     private void saveDisplayName(){
         String username = mUsernameView.getText().toString();
+        String userEmail = mEmailView.getText().toString();
         SharedPreferences pref = getSharedPreferences(CHAT_PREFS, 0);
         pref.edit().putString(DISPLAY_NAME_KEY, username).apply();
+        pref.edit().putString("user_email",userEmail).apply();
     }
 
     private void showErrorDialog(String message){

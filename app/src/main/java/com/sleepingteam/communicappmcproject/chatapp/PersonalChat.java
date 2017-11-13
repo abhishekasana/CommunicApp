@@ -17,11 +17,14 @@ import com.sleepingteam.communicappmcproject.R;
 public class PersonalChat extends AppCompatActivity {
 
     private String mDisplayName;
+    private String mEmail;
     private ListView mChatListView;
     private EditText mInputText;
     private ImageButton mSendButton;
 
     private DatabaseReference mDatabaseRefrence;
+    private DatabaseReference mchildDatabaseRefrence;
+    private DatabaseReference mUserChatDatabaseReference;
 
     private ChatListAdapter mAdapter;
 
@@ -33,9 +36,11 @@ public class PersonalChat extends AppCompatActivity {
         setContentView(R.layout.activity_personal_chat);
 
         setupDisplayName();
-        mDatabaseRefrence = FirebaseDatabase.getInstance().getReference();
-
 //        String email_id = getIntent().getStringExtra("EMAIL_ID");
+        mDatabaseRefrence = FirebaseDatabase.getInstance().getReference();
+//        String dbTag = "personalchat"+mEmail;
+        mchildDatabaseRefrence = mDatabaseRefrence.child("personalchat");
+        mUserChatDatabaseReference = mchildDatabaseRefrence.child(mDisplayName);
 
 
         // Link the Views in the layout to the Java code
@@ -67,6 +72,7 @@ public class PersonalChat extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences(RegisterActivity.CHAT_PREFS, MODE_PRIVATE);
 
         mDisplayName = prefs.getString(RegisterActivity.DISPLAY_NAME_KEY, null);
+        mEmail = prefs.getString("user_email",null);
 
         if(mDisplayName == null) mDisplayName = "Anonymous";
 
@@ -84,7 +90,7 @@ public class PersonalChat extends AppCompatActivity {
 //                Log.d("crypt", e.toString());
 //            }
             InstantMessage chat = new InstantMessage(input, mDisplayName);
-            mDatabaseRefrence.child("personalmessages").push().setValue(chat);
+            mUserChatDatabaseReference.child("messages").push().setValue(chat);
             mInputText.setText("");
         }
 
@@ -94,7 +100,7 @@ public class PersonalChat extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        mAdapter = new ChatListAdapter(this, mDatabaseRefrence, mDisplayName);
+        mAdapter = new ChatListAdapter(this, mUserChatDatabaseReference, mDisplayName);
         mChatListView.setAdapter(mAdapter);
     }
 
