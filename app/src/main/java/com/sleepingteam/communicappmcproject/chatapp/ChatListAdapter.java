@@ -37,6 +37,8 @@ public class ChatListAdapter extends BaseAdapter{
     private String mDisplayName;
     private ArrayList<DataSnapshot> mSnapshotList;
 
+    private String buddysEmailId;
+
     private ChildEventListener mListener = new ChildEventListener() {
         @Override
         public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -73,6 +75,17 @@ public class ChatListAdapter extends BaseAdapter{
         mDatabaseReference.addChildEventListener(mListener);
 
         mSnapshotList = new ArrayList<>();
+
+    }
+    public ChatListAdapter(Activity activity, DatabaseReference ref, String name, String buddy){
+        mActivity = activity;
+        mDisplayName = name;
+        mDatabaseReference = ref.child("messages");
+        mDatabaseReference.addChildEventListener(mListener);
+
+        mSnapshotList = new ArrayList<>();
+
+        buddysEmailId = buddy;
 
     }
 

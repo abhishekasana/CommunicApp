@@ -13,7 +13,7 @@ import android.widget.Toast;
 @SuppressLint("NewApi")
 public class CommonMethods {
 	
-	public static String Tag = "AnujWiFiDemo";
+	public static String Tag = "AbhiWifiDemo";
 
 	public static String getPath(Uri uri, Context context) {
 		if (uri == null) {

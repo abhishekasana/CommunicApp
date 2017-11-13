@@ -40,6 +40,10 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
     private LocationManager locationManager;
     private Context mContext;
 
+    private String email_id = "";
+
+    MyDatabaseHelper databaseHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +55,15 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
         mContext = getApplicationContext();
         locationManager = (LocationManager) mContext
                 .getSystemService(Context.LOCATION_SERVICE);
+      
+        email_id = getIntent().getStringExtra("EMAIL_ID");
 
         // Link the Views in the layout to the Java code
         mInputText = (EditText) findViewById(R.id.messageInput);
         mSendButton = (ImageButton) findViewById(R.id.sendButton);
         mChatListView = (ListView) findViewById(R.id.chat_list_view);
+
+        databaseHelper = new MyDatabaseHelper(this,null,null,1);
 
         mInputText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -154,7 +162,11 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
     @Override
     protected void onStart() {
         super.onStart();
-        mAdapter = new ChatListAdapter(this, mDatabaseRefrence, mDisplayName);
+//        if(!email_id.equals("")){
+//            mAdapter = new ChatListAdapter(this, mDatabaseRefrence, mDisplayName, email_id);
+//        }else{
+            mAdapter = new ChatListAdapter(this, mDatabaseRefrence, mDisplayName);
+//        }
         mChatListView.setAdapter(mAdapter);
     }
 
@@ -167,7 +179,7 @@ public class MainChatActivity extends AppCompatActivity implements LocationListe
     public void wifidirectclick(View view) {
         Intent intent = new Intent(getApplicationContext(), WiFiDirectActivity.class);
         Toast.makeText(getApplicationContext(),"Opening file sharing module",Toast.LENGTH_LONG).show();
-        startActivity(intent);
+//        startActivity(intent);
     }
 
     @Override
